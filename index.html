@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>斩神之凡尘神域 · 大夏境内，神明禁行</title>
+<style>
+/* ============ 基础 ============ */
+:root{
+  --bg:#05070d;
+  --bg2:#0a0f1c;
+  --bg3:#0e1526;
+  --ink:#e9e4d6;
+  --ink-dim:#9a94a8;
+  --gold:#d4af37;
+  --gold-2:#f0d68a;
+  --blood:#c1121f;
+  --blood-2:#e63946;
+  --violet:#8b5cf6;
+  --teal:#2dd4bf;
+  --line:rgba(212,175,55,.18);
+  --serif:"Songti SC","Noto Serif SC","Source Han Serif SC",STSong,"SimSun",serif;
+  --sans:"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.75;
+  overflow-x:hidden;
+}
+body::before{ /* 噪点纹理 */
+  content:"";
+  position:fixed;inset:0;
+  z-index:9999;pointer-events:none;
+  opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+::selection{background:var(--gold);color:#05070d}
+a{color:inherit;text-decoration:none}
+
+/* 背景迷雾光晕 */
+.bg-aura{
+  position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(1200px 800px at 85% -10%, rgba(139,92,246,.14), transparent 60%),
+    radial-gradient(900px 600px at -10% 30%, rgba(193,18,31,.10), transparent 60%),
+    radial-gradient(1000px 700px at 60% 110%, rgba(45,212,191,.05), transparent 60%),
+    linear-gradient(180deg,#05070d 0%,#080c16 45%,#05070d 100%);
+}
+.bg-aura::after{ /* 流动光斑 */
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(400px 400px at 30% 20%, rgba(212,175,55,.05), transparent 70%);
+  animation:drift 22s ease-in-out infinite alternate;
+}
+@keyframes drift{
+  0%{transform:translate(0,0) scale(1)}
+  100%{transform:translate(-60px,40px) scale(1.15)}
+}
+
+/* ============ 导航 ============ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 6vw;
+  background:rgba(5,7,13,.72);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.brand{
+  font-family:var(--serif);
+  font-size:1.25rem;font-weight:700;letter-spacing:.14em;
+  color:var(--gold-2);
+  display:flex;align-items:center;gap:.5rem;
+}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--blood);box-shadow:0 0 12px var(--blood);animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+nav .links{display:flex;gap:2.2rem;font-size:.9rem;letter-spacing:.12em}
+nav .links a{color:var(--ink-dim);transition:color .3s;position:relative}
+nav .links a:hover{color:var(--gold-2)}
+nav .links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--gold);transition:width .3s}
+nav .links a:hover::after{width:100%}
+
+/* ============ Hero ============ */
+.hero{
+  min-height:100vh;
+  display:grid;grid-template-columns:1.05fr .95fr;
+  align-items:center;gap:4vw;
+  padding:9vh 6vw 6vh;
+  position:relative;
+}
+.hero .tagline{
+  display:inline-block;
+  font-size:.78rem;letter-spacing:.3em;color:var(--gold);
+  border:1px solid var(--line);border-radius:999px;
+  padding:.45em 1.2em;margin-bottom:1.6rem;
+  background:rgba(212,175,55,.06);
+}
+.hero h1{
+  font-family:var(--serif);
+  font-size:clamp(2.6rem,6.4vw,5.2rem);
+  line-height:1.12;font-weight:900;
+  letter-spacing:.04em;
+}
+.hero h1 .stroke{
+  display:block;
+  color:transparent;
+  -webkit-text-stroke:1.5px var(--gold-2);
+}
+.hero h1 .gold{
+  background:linear-gradient(100deg,var(--gold-2) 10%,var(--gold) 45%,#fff3c4 60%,var(--gold) 80%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero .en{
+  margin-top:1.1rem;font-size:.95rem;letter-spacing:.42em;
+  color:var(--ink-dim);text-transform:uppercase;
+}
+.hero .slogan{
+  margin:2rem 0 1rem;
+  font-family:var(--serif);font-size:1.5rem;font-weight:700;
+  color:var(--blood-2);
+  text-shadow:0 0 22px rgba(230,57,70,.45);
+  letter-spacing:.18em;
+}
+.hero .desc{
+  max-width:52ch;color:var(--ink-dim);font-size:1.02rem;
+}
+.hero .meta{
+  display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2.2rem;
+}
+.hero .meta span{
+  font-size:.78rem;letter-spacing:.06em;color:var(--ink);
+  border:1px solid rgba(154,148,168,.3);
+  padding:.4em .9em;border-radius:6px;
+  background:rgba(14,21,38,.6);
+}
+.hero .cta{
+  margin-top:2.4rem;display:flex;gap:1rem;flex-wrap:wrap;
+}
+.cta a{
+  display:inline-block;padding:.85em 2em;border-radius:8px;
+  font-size:.95rem;letter-spacing:.12em;transition:all .3s;
+}
+.cta .primary{
+  background:linear-gradient(120deg,var(--blood),#7a0f18);
+  color:#fff;box-shadow:0 8px 30px rgba(193,18,31,.35);
+}
+.cta .primary:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(193,18,31,.5)}
+.cta .ghost{border:1px solid var(--gold);color:var(--gold-2)}
+.cta .ghost:hover{background:rgba(212,175,55,.12);transform:translateY(-3px)}
+
+.hero .poster-wrap{position:relative;display:flex;justify-content:center}
+.poster{
+  width:min(380px,80%);
+  aspect-ratio:3/4.2;object-fit:cover;
+  border-radius:16px;
+  box-shadow:0 0 60px rgba(139,92,246,.28),0 30px 80px rgba(0,0,0,.7);
+  border:1px solid rgba(212,175,55,.35);
+  animation:float 7s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.poster-glow{
+  position:absolute;inset:-8%;z-index:-1;border-radius:20px;
+  background:radial-gradient(closest-side,rgba(193,18,31,.25),rgba(139,92,246,.12),transparent);
+  filter:blur(30px);
+}
+.scroll-hint{
+  position:absolute;bottom:2.4rem;left:50%;transform:translateX(-50%);
+  color:var(--ink-dim);font-size:.75rem;letter-spacing:.3em;
+  animation:hint 2.2s ease-in-out infinite;
+}
+@keyframes hint{0%,100%{opacity:.25;transform:translate(-50%,0)}50%{opacity:1;transform:translate(-50%,8px)}}
+
+/* ============ 通用节 ============ */
+section{padding:8vh 6vw;position:relative}
+.sec-head{margin-bottom:4rem}
+.sec-head .no{
+  font-size:.85rem;letter-spacing:.4em;color:var(--gold);
+}
+.sec-head h2{
+  font-family:var(--serif);
+  font-size:clamp(1.9rem,4vw,3rem);
+  font-weight:900;letter-spacing:.06em;margin-top:.5rem;
+}
+.sec-head h2 em{font-style:normal;color:var(--blood-2)}
+.sec-head p{color:var(--ink-dim);margin-top:.8rem;max-width:60ch}
+
+/* 入场动画 */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .9s ease,transform .9s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ============ 世界观 ============ */
+.world-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.4rem}
+.world-card{
+  border:1px solid var(--line);border-radius:14px;
+  padding:2rem 1.7rem;background:linear-gradient(160deg,rgba(14,21,38,.9),rgba(5,7,13,.9));
+  transition:transform .35s,border-color .35s,box-shadow .35s;
+  position:relative;overflow:hidden;
+}
+.world-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+  opacity:.4;transition:opacity .3s;
+}
+.world-card:hover{transform:translateY(-6px);border-color:rgba(212,175,55,.5);box-shadow:0 18px 50px rgba(0,0,0,.5)}
+.world-card:hover::before{opacity:1}
+.world-card .num{
+  font-family:var(--serif);font-size:2.6rem;font-weight:900;
+  background:linear-gradient(120deg,var(--gold-2),var(--gold));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.world-card h3{font-family:var(--serif);font-size:1.25rem;margin:.4rem 0 .8rem;letter-spacing:.06em}
+.world-card p{font-size:.92rem;color:var(--ink-dim)}
+.world-card .tag{
+  display:inline-block;margin-top:1rem;font-size:.72rem;letter-spacing:.1em;
+  color:var(--violet);border:1px solid rgba(139,92,246,.4);border-radius:999px;padding:.2em .8em;
+}
+
+/* ============ 剧情 ============ */
+.plot-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.plot-card{
+  border:1px solid var(--line);border-radius:16px;
+  background:linear-gradient(170deg,rgba(14,21,38,.95),rgba(5,7,13,.95));
+  padding:2.2rem 2rem;position:relative;overflow:hidden;
+}
+.plot-card.season2{border-color:rgba(139,92,246,.35)}
+.plot-card .season-badge{
+  font-size:.72rem;letter-spacing:.3em;padding:.35em 1em;border-radius:999px;
+  background:rgba(212,175,55,.1);border:1px solid var(--line);color:var(--gold);
+  display:inline-block;
+}
+.plot-card.season2 .season-badge{background:rgba(139,92,246,.14);color:var(--violet);border-color:rgba(139,92,246,.4)}
+.plot-card h3{font-family:var(--serif);font-size:1.6rem;font-weight:900;margin:.9rem 0 .2rem;letter-spacing:.05em}
+.plot-card .sub{color:var(--ink-dim);font-size:.82rem;letter-spacing:.08em;margin-bottom:1.4rem}
+.plot-card .plot-list{list-style:none}
+.plot-card .plot-list li{
+  padding:.85rem 0 .85rem 2rem;position:relative;
+  border-bottom:1px dashed rgba(154,148,168,.14);font-size:.93rem;color:var(--ink);
+}
+.plot-card .plot-list li:last-child{border-bottom:none}
+.plot-card .plot-list li::before{
+  content:"◆";position:absolute;left:.4rem;top:1rem;
+  color:var(--gold);font-size:.6rem;
+}
+.plot-card.season2 .plot-list li::before{color:var(--violet)}
+.plot-card .plot-list b{color:var(--gold-2);font-weight:600}
+.plot-card.season2 .plot-list b{color:#c4b5fd}
+.plot-card .movie-note{
+  margin-top:1.2rem;padding:1rem 1.2rem;border-radius:10px;
+  background:rgba(193,18,31,.1);border:1px solid rgba(193,18,31,.35);
+  font-size:.88rem;color:var(--ink-dim);
+}
+.plot-card .movie-note b{color:var(--blood-2)}
+
+/* ============ 人物 ============ */
+.faction{margin-bottom:4.5rem}
+.faction-head{
+  display:flex;align-items:baseline;gap:1.2rem;margin-bottom:1.6rem;
+  border-bottom:1px solid var(--line);padding-bottom:.8rem;
+}
+.faction-head h3{
+  font-family:var(--serif);font-size:1.5rem;font-weight:900;letter-spacing:.1em;
+}
+.faction-head h3 em{font-style:normal;color:var(--blood-2)}
+.faction-head .count{font-size:.78rem;color:var(--ink-dim);letter-spacing:.2em}
+.char-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:1.3rem}
+.char-card{
+  border:1px solid rgba(154,148,168,.18);border-radius:14px;
+  background:linear-gradient(165deg,rgba(14,21,38,.92),rgba(7,10,18,.95));
+  padding:1.6rem 1.5rem;position:relative;overflow:hidden;
+  transition:transform .35s,border-color .35s,box-shadow .35s;
+}
+.char-card:hover{transform:translateY(-6px) scale(1.01);border-color:var(--gold);box-shadow:0 20px 60px rgba(0,0,0,.55)}
+.char-card::after{
+  content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(212,175,55,.14),transparent);
+  transition:transform .4s;
+}
+.char-card:hover::after{transform:scale(1.6)}
+.char-card .avatar{
+  width:58px;height:58px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:1.6rem;font-weight:900;
+  margin-bottom:1rem;position:relative;
+  border:1px solid rgba(212,175,55,.4);
+  background:radial-gradient(circle at 30% 30%,#1b2438,#0b101d);
+  color:var(--gold-2);
+}
+.char-card .avatar::before{
+  content:"";position:absolute;inset:-5px;border-radius:50%;
+  border:1px dashed rgba(212,175,55,.3);animation:spin 16s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.char-card h4{font-family:var(--serif);font-size:1.18rem;font-weight:900;letter-spacing:.05em}
+.char-card .role-tag{
+  font-size:.7rem;letter-spacing:.06em;color:var(--violet);
+  border:1px solid rgba(139,92,246,.35);border-radius:999px;
+  display:inline-block;padding:.12em .7em;margin:.5rem 0 .6rem;
+}
+.char-card .power{
+  font-size:.8rem;color:var(--gold);letter-spacing:.04em;margin-bottom:.5rem;
+}
+.char-card .bio{font-size:.86rem;color:var(--ink-dim)}
+.char-card.dead{filter:grayscale(.4)}
+.char-card.dead .avatar{color:#c8c2b4;border-color:rgba(154,148,168,.35)}
+.char-card.dead .avatar::before{border-color:rgba(154,148,168,.2)}
+.char-card.dead h4::after{
+  content:" · 已牺牲";font-size:.68rem;color:var(--blood-2);letter-spacing:.05em;
+}
+
+/* ============ 关系链 ============ */
+.relation{
+  border:1px solid var(--line);border-radius:20px;
+  background:linear-gradient(170deg,rgba(14,21,38,.9),rgba(5,7,13,.95));
+  padding:3rem 2rem;overflow-x:auto;
+}
+.relation-svg{width:100%;min-width:760px;height:auto;display:block}
+.relation .r-node{
+  font-family:var(--serif);font-weight:700;font-size:13px;letter-spacing:.06em;
+  fill:var(--ink);
+}
+.relation .r-node.center{font-size:16px;fill:var(--gold-2);font-weight:900}
+.relation .r-line{
+  fill:none;stroke:rgba(212,175,55,.4);stroke-width:1;stroke-dasharray:5 5;
+  animation:flow 3s linear infinite;
+}
+@keyframes flow{to{stroke-dashoffset:-10}}
+.relation .r-line.blood{stroke:rgba(230,57,70,.55)}
+.relation .r-line.violet{stroke:rgba(139,92,246,.55)}
+.relation .r-label{
+  font-size:10px;letter-spacing:.1em;fill:var(--ink-dim);
+}
+.legend{display:flex;flex-wrap:wrap;gap:1.4rem;margin-top:1.6rem;font-size:.8rem;color:var(--ink-dim)}
+.legend i{display:inline-block;width:22px;height:0;border-top:2px dashed;vertical-align:middle;margin-right:.4rem}
+.legend .l1 i{border-color:var(--gold)}
+.legend .l2 i{border-color:var(--blood)}
+.legend .l3 i{border-color:var(--violet)}
+
+/* ============ Footer ============ */
+footer{
+  border-top:1px solid var(--line);
+  padding:3rem 6vw 4rem;text-align:center;color:var(--ink-dim);font-size:.85rem;
+}
+footer .big{
+  font-family:var(--serif);font-size:1.3rem;color:var(--gold-2);
+  letter-spacing:.3em;margin-bottom:.8rem;
+}
+footer .line2{letter-spacing:.15em;color:var(--blood-2);margin-bottom:1.2rem}
+footer .note{opacity:.7;font-size:.78rem}
+
+/* ============ 响应式 ============ */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding-top:13vh;text-align:left}
+  .hero .poster-wrap{order:-1}
+  .plot-grid{grid-template-columns:1fr}
+  nav .links{display:none}
+}
+</style>
+</head>
+<body>
+<div class="bg-aura"></div>
+
+<!-- ======= 导航 ======= -->
+<nav>
+  <div class="brand"><span class="dot"></span>斩神之凡尘神域</div>
+  <div class="links">
+    <a href="#world">世界观</a>
+    <a href="#plot">剧情</a>
+    <a href="#characters">人物</a>
+    <a href="#relation">关系链</a>
+  </div>
+</nav>
+
+<!-- ======= Hero ======= -->
+<header class="hero">
+  <div class="hero-left">
+    <span class="tagline reveal">国漫 · 都市奇幻 · 凡人弑神</span>
+    <h1 class="reveal">
+      <span class="stroke">斩神之</span>
+      <span class="gold">凡尘神域</span>
+    </h1>
+    <div class="en reveal">SLAY THE GODS</div>
+    <div class="slogan reveal">大夏境内，神明禁行！</div>
+    <p class="desc reveal">
+      改编自三九音域现象级小说《我在精神病院学斩神》。迷雾降临，神明复苏，
+      失明少年林七夜觉醒诸神之力，从炽天使构筑的虚假城市中走出，加入守夜人，
+      带领伙伴一路斩神，从「守小家」成长为「守国家」。
+    </p>
+    <div class="meta reveal">
+      <span>原著 · 三九音域</span>
+      <span>出品 · 腾讯视频 / 番茄动漫 / 天使文化</span>
+      <span>制作 · 神漫文化</span>
+      <span>两季 · 全 30 集</span>
+    </div>
+    <div class="cta reveal">
+      <a class="primary" href="#plot">开始探索</a>
+      <a class="ghost" href="#characters">人物图鉴</a>
+    </div>
+  </div>
+  <div class="poster-wrap reveal">
+    <div class="poster-glow"></div>
+    <img class="poster" src="assets/poster.png" alt="斩神之凡尘神域 海报">
+  </div>
+  <div class="scroll-hint">SCROLL ▼</div>
+</header>
+
+<!-- ======= 世界观 ======= -->
+<section id="world">
+  <div class="sec-head reveal">
+    <div class="no">01 / WORLD</div>
+    <h2>世界观 · <em>迷雾之下的神域</em></h2>
+    <p>这是一个人类统治、神明潜伏的时代：百年前迷雾降临，旧神复苏，而大夏，成为全球仅存的文明孤岛。</p>
+  </div>
+  <div class="world-grid">
+    <div class="world-card reveal">
+      <div class="num">雾</div>
+      <h3>迷雾纪元</h3>
+      <p>百年前，南极涌现诡异迷雾并席卷全球，被迷雾吞没的国家音讯全无。唯有迷雾在大夏国境线前停下，大夏成为世间仅存的安宁之地，却也因此成为众神觊觎的目标。</p>
+      <span class="tag">南极 · 雾临</span>
+    </div>
+    <div class="world-card reveal">
+      <div class="num">神</div>
+      <h3>神明复苏</h3>
+      <p>各国神话中的神明与怪物陆续现世：炽天使米迦勒、冥王哈迪斯、海神波塞冬……怪物袭击人类，神明则选择「神明代理人」，赐予凡人超凡神力。而属于大夏的神明，却不知所踪。</p>
+      <span class="tag">米迦勒 · 倪克斯 · 波塞冬</span>
+    </div>
+    <div class="world-card reveal">
+      <div class="num">墟</div>
+      <h3>禁墟与禁物</h3>
+      <p>少数人觉醒的超凡能力被称为「禁墟」，如凡尘神域、玫火羽裳、黑王、重生等；而蕴含毁灭性力量的古代禁忌之物则称「禁物」，如灭世级的【湿婆怨】，足以抹杀一座城市。</p>
+      <span class="tag">禁墟序列 · 禁物编号</span>
+    </div>
+    <div class="world-card reveal">
+      <div class="num">夜</div>
+      <h3>守夜人组织</h3>
+      <p>大夏官方抗神机构，肩负守护人类、对抗神明与「神秘」的重任，下设各地编号小队（如沧南 136 小队）。另有诸神精神病院——主角林七夜的秘境，可治愈精神崩溃的神明，借取众神之力。</p>
+      <span class="tag">136 小队 · 夜幕小队</span>
+    </div>
+  </div>
+</section>
+
+<!-- ======= 剧情 ======= -->
+<section id="plot">
+  <div class="sec-head reveal">
+    <div class="no">02 / STORY</div>
+    <h2>剧情 · <em>两季斩神之路</em></h2>
+    <p>从沧南市 136 小队的初出茅庐，到西方诸神入侵的沧南神战——两季 30 集，一段凡人弑神的史诗。</p>
+  </div>
+  <div class="plot-grid">
+    <!-- 第一季 -->
+    <div class="plot-card reveal">
+      <span class="season-badge">SEASON 01 · 2024 · 全15集</span>
+      <h3>第一季 · 走出虚假之城</h3>
+      <div class="sub">腾讯视频每周三更新 · 首日2集 · 豆瓣 8.4</div>
+      <ul class="plot-list">
+        <li><b>失明少年觉醒</b>——林七夜 7 岁时与炽天使米迦勒对视而失明十年，被视作精神病人困于诸神精神病院。十年后放学路上遭遇怪物袭击，爆发出神明代理人之力并重获光明。</li>
+        <li><b>诸神精神病院开启</b>——林七夜在精神世界发现一座精神病院，里面住着陷入精神崩溃的神明：黑夜女神倪克斯、孙悟空、梅林、吉尔伽美什等。治愈他们即可借取众神之力。</li>
+        <li><b>加入 136 小队</b>——在守夜人赵空城的引领下，林七夜加入沧南市 136 小队。老城区大战中，他独自单杀鬼面王，却将功劳让给赵空城，并许下替其守夜十年的誓言。</li>
+        <li><b>赵空城牺牲</b>——鬼面王事件中赵空城重创牺牲，成为无数观众的「意难平」。林七夜背负其遗志，假借应征入伍，正式踏上斩神护世之路。</li>
+        <li><b>沧南大劫与湿婆怨</b>——禁物【湿婆怨】的真相浮出水面：十年前沧南曾被抹杀，林七夜以凡尘神域之力重塑了这座城市，让已死的市民在「奇迹」中多活了十年。</li>
+      </ul>
+    </div>
+    <!-- 第二季 -->
+    <div class="plot-card season2 reveal">
+      <span class="season-badge">SEASON 02 · 2026 · 全15集</span>
+      <h3>第二季 · 凡人弑神的战火</h3>
+      <div class="sub">腾讯视频每周四更新 · 预约 870 万 · 暑期国漫热度登顶</div>
+      <ul class="plot-list">
+        <li><b>津南山集训归来</b>——林七夜完成一年残酷集训，正式成为守夜人回归 136 小队。津南山灾变、十切鬼童案件，结业试炼化作生死炼狱，古神教会围剿新兵营。</li>
+        <li><b>兄弟以命换命</b>——沈青竹重伤濒死，百里涂明送出祖传至宝回天玉护住其残魂；林七夜独自断后：「这场灾难因我而起，我来终结。」诸神精神病院主场反杀古神长老呓语。</li>
+        <li><b>沈青竹卧底</b>——以「寂灭天使」身份潜伏古神教会的沈青竹被迫当众对守夜人动手上演苦肉计，在呓语的层层试探与神魂冲击下坚持卧底，暗中破坏献祭计划。</li>
+        <li><b>沧南围城神战</b>——古神教会三艘浮空战舰悬于沧南高空，波塞冬、洛基率神明仆从大军压境。大夏五大人类天花板齐聚前线，陈牧野解开封印阻拦冰霜巨人，林七夜驾驭黑夜女神权能正面击退神将。</li>
+        <li><b>终极反转：沧南幻境</b>——大战落幕，洛基道出惊天真相：如今的沧南不过是凡尘神域构建的十年幻境，这座城市早在十年前便已覆灭。陈牧野守护湿婆怨的真相曝光，真正的惨烈大战留待剧场版《沧南之殇》与第三季。</li>
+      </ul>
+      <div class="movie-note"><b>剧场版预告</b> · 《沧南之殇》作为前传已提上日程，将揭示沧南市毁灭的真正真相。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= 人物图鉴 ======= -->
+<section id="characters">
+  <div class="sec-head reveal">
+    <div class="no">03 / CHARACTERS</div>
+    <h2>人物图鉴 · <em>两季全角色</em></h2>
+    <p>守夜人、神明、卧底与宿敌——两季 30 集登场的主要人物全面档案。</p>
+  </div>
+
+  <!-- 核心主角 -->
+  <div class="faction reveal">
+    <div class="faction-head">
+      <h3>★ <em>核心主角</em></h3>
+      <span class="count">夜幕小队队长 · 诸神精神病院院长</span>
+    </div>
+    <div class="char-grid">
+      <div class="char-card reveal">
+        <div class="avatar">林</div>
+        <h4>林七夜</h4>
+        <span class="role-tag">主角 · 双神代理人</span>
+        <div class="power">禁墟 · 凡尘神域 ｜ 代理人 · 米迦勒 / 倪克斯</div>
+        <p class="bio">7 岁与炽天使米迦勒对视失明十年，觉醒后开启诸神精神病院。在赵空城引领下加入守夜人，立誓守夜十年。曾以神力重塑被抹杀的沧南市，与已死的市民在奇迹中生活十年。带领夜幕小队喊出「大夏境内，神明禁行」，一步步从守小家到守国家。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 136小队 -->
+  <div class="faction reveal">
+    <div class="faction-head">
+      <h3>壹 · <em>沧南 136 小队</em></h3>
+      <span class="count">守夜人 · 沧南市守护者</span>
+    </div>
+    <div class="char-grid">
+      <div class="char-card dead reveal">
+        <div class="avatar">赵</div>
+        <h4>赵空城</h4>
+        <span class="role-tag">引路人 · 亦师亦父</span>
+        <div class="power">守夜人 · 沧南 136 小队</div>
+        <p class="bio">林七夜的领路人与精神支柱。老城区大战中独自力战鬼面王，功勋被林七夜让渡，最终重创牺牲。他的牺牲催生了林七夜「替赵空城守夜十年」的誓言，是无数观众心中最大的意难平。</p>
+      </div>
+      <div class="char-card dead reveal">
+        <div class="avatar">陈</div>
+        <h4>陈牧野</h4>
+        <span class="role-tag">原 136 小队队长</span>
+        <div class="power">代理神明 · 阎罗王 ｜ 禁墟 · 黑无常</div>
+        <p class="bio">实力堪比克莱因境的强大守夜人，曾与绍平歌并称「黑白双煞」。十年前已死，活在林七夜创造的奇迹沧南中，十年间以阎罗殿气息镇压禁物【湿婆怨】。第二季神战中解开封印阻拦冰霜巨人，守护真相曝光。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">红</div>
+        <h4>红缨</h4>
+        <span class="role-tag">136 小队正面战力</span>
+        <div class="power">禁墟 · 玫火羽裳</div>
+        <p class="bio">巾帼不让须眉的主力战力。手持红缨枪可产生强大火焰焚烧神秘，动漫中刻画得飒爽惊艳，兼具女性的柔美与力量。目睹队友一个个离去，依旧坚守沧南。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">吴</div>
+        <h4>吴湘南</h4>
+        <span class="role-tag">原 136 小队副队长</span>
+        <div class="power">禁墟 · 重生 ｜ 本源 · 太阳（天照）</div>
+        <p class="bio">前「蓝雨」小队队员，不死剑者。拥有太阳本源与重生禁墟，可多次复生。沧南一战后被召回总部研究高天原的秘密，为消灭须佐之男而战。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">司</div>
+        <h4>司小南</h4>
+        <span class="role-tag">战斗辅助兼军医</span>
+        <div class="power">禁墟 · 诡诈戏法 / 无缘纱 ｜ 洛基代理人</div>
+        <p class="bio">10 岁被诡计之神洛基选中，潜伏守夜人多年。18 岁参与沧南大劫，后潜伏北欧神国阿斯加德，布局毒杀洛基并继承其神位，成为新一任诡计之神，创立【隐神】组织——深藏不露的布局者。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">温</div>
+        <h4>温祈墨</h4>
+        <span class="role-tag">136 小队成员</span>
+        <div class="power">守夜人 · 正面战力</div>
+        <p class="bio">沧南市 136 小队成员之一，与队友共同守护沧南、抵御神秘入侵。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 夜幕小队 -->
+  <div class="faction reveal">
+    <div class="faction-head">
+      <h3>贰 · <em>夜幕小队</em></h3>
+      <span class="count">守夜人编制外的特殊小队 · 深红斗篷</span>
+    </div>
+    <div class="char-grid">
+      <div class="char-card reveal">
+        <div class="avatar">安</div>
+        <h4>安卿鱼</h4>
+        <span class="role-tag">副队长 · 智囊</span>
+        <div class="power">禁墟 · 众生之门 ｜ 拥有四大分身</div>
+        <p class="bio">冷静理智的天才，林七夜最重要的智囊伙伴。高中时与林七夜联手解决难陀蛇妖，此后独自在下水道解剖「神秘」一年，被守夜人通缉。擅长情报推演与布局谋划，真相身份扑朔迷离。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">胖</div>
+        <h4>百里胖胖 · 百里涂明</h4>
+        <span class="role-tag">灵宝天尊转世</span>
+        <div class="power">禁墟力量极强 · 法宝众多</div>
+        <p class="bio">百里世家最受宠的小太爷，见人就送劳力士的土豪公子哥，被誉为「斩神中的哆啦A梦」。体术几乎为零但法宝多到离谱。第二季送出祖传至宝回天玉护住沈青竹残魂，见证 136 小队以命换命的羁绊。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">曹</div>
+        <h4>曹渊</h4>
+        <span class="role-tag">狂战士 · 罪孽之刃</span>
+        <div class="power">禁墟 · 黑王（神墟之下第一战力）</div>
+        <p class="bio">战力爆表，一旦暴走连队友都砍。幼年时禁墟黑王暴走屠了自家满门，从小被当作灾厄：蹲过监狱、当过和尚，自称背着 333 条人命。历经磨难驯服黑王，成为林七夜最忠诚的战友。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">沈</div>
+        <h4>沈青竹 · 拽哥</h4>
+        <span class="role-tag">卧底 · 寂灭天使</span>
+        <div class="power">集训营天才 · 邪神侵蚀承受者</div>
+        <p class="bio">集训营中仅次于林七夜的天才，也是夜幕小队中最特殊的一个。第二季以「寂灭天使」身份潜伏古神教会，承受邪神侵蚀与当众拷问，上演苦肉计掩护队友，最终与林七夜公开接头，是贯穿全季的暗线英雄。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">伽</div>
+        <h4>伽蓝 · 不朽少女</h4>
+        <span class="role-tag">酆都天宫 · 古棺少女</span>
+        <div class="power">肉身无敌 · 命运绑定</div>
+        <p class="bio">沉睡于酆都天宫古棺中的少女，与林七夜命运深度绑定，跨越轮回的羁绊。肉身强悍无匹，单恋林七夜，是夜幕小队不可或缺的战力。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">江</div>
+        <h4>江洱</h4>
+        <span class="role-tag">008 小队唯一幸存者</span>
+        <div class="power">守夜人 · 夜幕小队成员</div>
+        <p class="bio">挑战各地区守夜人队伍时相遇的 008 小队唯一幸存者，背负同伴遗志加入夜幕小队，共同征战诸神。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 诸神精神病院 -->
+  <div class="faction reveal">
+    <div class="faction-head">
+      <h3>叁 · <em>诸神精神病院众神</em></h3>
+      <span class="count">林七夜的「病友」与最强后盾</span>
+    </div>
+    <div class="char-grid">
+      <div class="char-card reveal">
+        <div class="avatar">倪</div>
+        <h4>倪克斯 · 黑夜女神</h4>
+        <span class="role-tag">最强辅助神明</span>
+        <div class="power">黑夜本源 · 视林七夜如亲儿</div>
+        <p class="bio">希腊神话中的原始黑夜女神。认林七夜为亡子达纳都斯，视如亲儿子，赠予黑夜本源。第二季沧南神战中，林七夜彻底驾驭其权能正面击退神明，是全书最强的辅助神明。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">米</div>
+        <h4>米迦勒 · 炽天使</h4>
+        <span class="role-tag">奇迹之神 · 引路神明</span>
+        <div class="power">炽天使 · 神明代理人契约</div>
+        <p class="bio">林七夜童年因与他对视而失明十年，也因他而觉醒神力。以神力构建虚假的沧南城让林七夜生活十年，是林七夜命运的起点与第一位神明契约者。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">孙</div>
+        <h4>孙悟空</h4>
+        <span class="role-tag">自闭症大圣</span>
+        <div class="power">齐天大圣 · 承诺护佑</div>
+        <p class="bio">诸神精神病院中陷入自闭的斗战胜佛。承诺百里之内护林七夜周全，是林七夜最可靠的神明后盾之一。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">神</div>
+        <h4>梅林 / 吉尔伽美什 / 布拉基&伊登</h4>
+        <span class="role-tag">精神病院其余神明</span>
+        <div class="power">大法师 · 英雄王 · 诗神夫妇</div>
+        <p class="bio">诸神精神病院的其余四位神明病友：大法师梅林、英雄王吉尔伽美什、诗神布拉基与青春女神伊登，全程助力主角，构成林七夜纵横神域的「神级外挂团」。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 反派与域外神明 -->
+  <div class="faction reveal">
+    <div class="faction-head">
+      <h3>肆 · <em>反派与域外神明</em></h3>
+      <span class="count">古神教会 · 西方神系 · 终极混沌</span>
+    </div>
+    <div class="char-grid">
+      <div class="char-card reveal">
+        <div class="avatar">洛</div>
+        <h4>洛基 · 诡计之神</h4>
+        <span class="role-tag">北欧神系 · 核心反派</span>
+        <div class="power">欺骗布局 · 沧南大劫推手</div>
+        <p class="bio">擅长欺骗与布局的北欧诡计之神，前期核心反派，制造沧南大劫推动主线。第二季末道出「沧南只是凡尘神域幻境」的惊天真相，其话语成为全剧最大反转的引信。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">波</div>
+        <h4>波塞冬 · 海神</h4>
+        <span class="role-tag">希腊神系 · 第二季强敌</span>
+        <div class="power">海神权能 · 神明仆从军团</div>
+        <p class="bio">第二季率大批神明仆从围攻沧南的西方主神之一。沧南神战中其麾下神将兵临城下，被彻底驾驭黑夜权能的林七夜正面击退。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">古</div>
+        <h4>古神教会</h4>
+        <span class="role-tag">呓语 · 吕良 · 三大天使</span>
+        <div class="power">浮空战舰 · 献祭大阵 · 漫天黑藤</div>
+        <p class="bio">西方神明入侵大夏的先遣组织。长老呓语神魂入侵诸神精神病院反被反杀；吕良催动漫天黑藤封锁全城，以献祭大阵抽取全城生灵能量，企图唤醒灭世禁物【湿婆怨】。沈青竹便潜伏于此。</p>
+      </div>
+      <div class="char-card reveal">
+        <div class="avatar">渊</div>
+        <h4>阿撒托斯 · 混沌之主</h4>
+        <span class="role-tag">克苏鲁 · 终极 BOSS</span>
+        <div class="power">混沌本源 · 外神之首</div>
+        <p class="bio">全书终极 BOSS，克苏鲁神话中的混沌本源与外神之首。迷雾与诸神异变的深层源头，是林七夜与夜幕小队最终将要直面的大恐怖。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= 关系链 ======= -->
+<section id="relation">
+  <div class="sec-head reveal">
+    <div class="no">04 / RELATION</div>
+    <h2>人物关系链 · <em>夜幕中心的羁绊</em></h2>
+    <p>以林七夜为轴心——守夜人、神明、队友与宿敌，构成这张斩神世界的羁绊网络。</p>
+  </div>
+  <div class="relation reveal">
+    <svg class="relation-svg" viewBox="0 0 900 640" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="cg" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(212,175,55,.25)"/>
+          <stop offset="100%" stop-color="rgba(212,175,55,0)"/>
+        </radialGradient>
+      </defs>
+
+      <!-- 连接线（中心 → 各方） -->
+      <!-- 至亲/引路人 -->
+      <line class="r-line" x1="450" y1="320" x2="450" y2="90"/>
+      <line class="r-line blood" x1="450" y1="320" x2="170" y2="180"/>
+      <line class="r-line" x1="450" y1="320" x2="730" y2="180"/>
+      <line class="r-line violet" x1="450" y1="320" x2="150" y2="470"/>
+      <line class="r-line blood" x1="450" y1="320" x2="730" y2="470"/>
+      <line class="r-line" x1="450" y1="320" x2="300" y2="600"/>
+      <line class="r-line violet" x1="450" y1="320" x2="620" y2="590"/>
+
+      <!-- 中心 -->
+      <circle cx="450" cy="320" r="150" fill="url(#cg)"/>
+      <circle cx="450" cy="320" r="58" fill="#0e1526" stroke="rgba(212,175,55,.6)" stroke-width="1.5"/>
+      <text class="r-node center" x="450" y="316" text-anchor="middle">林七夜</text>
+      <text class="r-label" x="450" y="336" text-anchor="middle">双神代理人</text>
+
+      <!-- 节点 -->
+      <!-- 上：倪克斯 -->
+      <circle cx="450" cy="90" r="34" fill="#0e1526" stroke="rgba(139,92,246,.6)" stroke-width="1.2"/>
+      <text class="r-node" x="450" y="86" text-anchor="middle">倪克斯</text>
+      <text class="r-label" x="450" y="106" text-anchor="middle">视如亲儿</text>
+
+      <!-- 左：赵空城 -->
+      <circle cx="170" cy="180" r="34" fill="#0e1526" stroke="rgba(230,57,70,.6)" stroke-width="1.2"/>
+      <text class="r-node" x="170" y="176" text-anchor="middle">赵空城</text>
+      <text class="r-label" x="170" y="196" text-anchor="middle">引路 · 牺牲</text>
+
+      <!-- 右：米迦勒 -->
+      <circle cx="730" cy="180" r="34" fill="#0e1526" stroke="rgba(212,175,55,.6)" stroke-width="1.2"/>
+      <text class="r-node" x="730" y="176" text-anchor="middle">米迦勒</text>
+      <text class="r-label" x="730" y="196" text-anchor="middle">神力之源</text>
+
+      <!-- 左下：136小队 -->
+      <circle cx="150" cy="470" r="34" fill="#0e1526" stroke="rgba(139,92,246,.6)" stroke-width="1.2"/>
+      <text class="r-node" x="150" y="466" text-anchor="middle">136小队</text>
+      <text class="r-label" x="150" y="486" text-anchor="middle">陈牧野 · 红缨</text>
+
+      <!-- 右下：夜幕小队 -->
+      <circle cx="730" cy="470" r="34" fill="#0e1526" stroke="rgba(230,57,70,.6)" stroke-width="1.2"/>
+      <text class="r-node" x="730" y="466" text-anchor="middle">夜幕小队</text>
+      <text class="r-label" x="730" y="486" text-anchor="middle">安卿鱼 · 曹渊</text>
+
+      <!-- 左下2：司小南 -->
+      <circle cx="300" cy="600" r="34" fill="#0e1526" stroke="rgba(212,175,55,.6)" stroke-width="1.2"/>
+      <text class="r-node" x="300" y="596" text-anchor="middle">司小南</text>
+      <text class="r-label" x="300" y="616" text-anchor="middle">洛基代理人</text>
+
+      <!-- 右下2：洛基 -->
+      <circle cx="620" cy="590" r="34" fill="#0e1526" stroke="rgba(139,92,246,.6)" stroke-width="1.2"/>
+      <text class="r-node" x="620" y="586" text-anchor="middle">洛基</text>
+      <text class="r-label" x="620" y="606" text-anchor="middle">宿敌 · 幻境真相</text>
+    </svg>
+    <div class="legend">
+      <span class="l1"><i></i>羁绊 / 守护</span>
+      <span class="l2"><i></i>传承 / 牺牲</span>
+      <span class="l3"><i></i>宿敌 / 布局</span>
+    </div>
+  </div>
+</section>
+
+<!-- ======= Footer ======= -->
+<footer>
+  <div class="big">大夏境内 · 神明禁行</div>
+  <div class="line2">夜幕为名 · 守大夏黎明</div>
+  <div class="note">
+    本站为《斩神之凡尘神域》动画资料专题站 · 改编自三九音域小说《我在精神病院学斩神》<br>
+    内容整理自公开资料，版权归原作者与出品方所有 · 仅供爱好者交流
+  </div>
+</footer>
+
+<script>
+/* 入场动画 */
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
