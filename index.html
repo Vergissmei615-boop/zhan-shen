@@ -90,7 +90,15 @@ nav .links a:hover::after{width:100%}
   align-items:center;gap:4vw;
   padding:9vh 6vw 6vh;
   position:relative;
+  overflow:hidden;
 }
+.hero-bg{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;opacity:.34;z-index:-1;
+  filter:saturate(1.15);
+  animation:heroZoom 26s ease-in-out infinite alternate;
+}
+@keyframes heroZoom{0%{transform:scale(1)}100%{transform:scale(1.08)}}
 .hero .tagline{
   display:inline-block;
   font-size:.78rem;letter-spacing:.3em;color:var(--gold);
@@ -220,6 +228,26 @@ section{padding:8vh 6vw;position:relative}
 
 /* ============ 剧情 ============ */
 .plot-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.banner-wrap{
+  position:relative;margin:-2.2rem -2rem 1.6rem;overflow:hidden;
+}
+.banner-wrap img{
+  width:100%;display:block;aspect-ratio:16/8;object-fit:cover;
+  transition:transform .6s ease;
+}
+.plot-card:hover .banner-wrap img{transform:scale(1.04)}
+.banner-wrap::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:46%;
+  background:linear-gradient(transparent,rgba(5,7,13,.92));
+  pointer-events:none;
+}
+.banner-label{
+  position:absolute;right:1rem;top:1rem;z-index:2;
+  font-size:.68rem;letter-spacing:.22em;color:var(--gold-2);
+  background:rgba(5,7,13,.72);border:1px solid rgba(212,175,55,.4);
+  border-radius:999px;padding:.3em 1em;
+  backdrop-filter:blur(6px);
+}
 .plot-card{
   border:1px solid var(--line);border-radius:16px;
   background:linear-gradient(170deg,rgba(14,21,38,.95),rgba(5,7,13,.95));
@@ -310,6 +338,32 @@ section{padding:8vh 6vw;position:relative}
   content:" · 已牺牲";font-size:.68rem;color:var(--blood-2);letter-spacing:.05em;
 }
 
+/* 带立绘的人物卡片 */
+.char-card.hero-card{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.char-card.hero-card .char-img{
+  width:100%;aspect-ratio:2/2.4;object-fit:cover;
+  display:block;transition:transform .6s ease;
+}
+.char-card.hero-card:hover .char-img{transform:scale(1.06)}
+.char-card.hero-card .char-img-wrap{position:relative;overflow:hidden}
+.char-card.hero-card .char-img-wrap::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:52%;
+  background:linear-gradient(transparent,rgba(5,7,13,.96));
+  pointer-events:none;
+}
+.char-card.hero-card .char-name-overlay{
+  position:absolute;left:1.2rem;bottom:.9rem;z-index:2;
+  font-family:var(--serif);font-size:1.5rem;font-weight:900;letter-spacing:.08em;
+  text-shadow:0 2px 18px rgba(0,0,0,.8);
+}
+.char-card.hero-card .char-body{padding:1.2rem 1.5rem 1.5rem}
+.char-card.hero-card .char-img-wrap .badge-corner{
+  position:absolute;right:.9rem;top:.9rem;z-index:2;
+  font-size:.66rem;letter-spacing:.16em;color:var(--gold-2);
+  background:rgba(5,7,13,.7);border:1px solid rgba(212,175,55,.4);
+  border-radius:999px;padding:.25em .8em;backdrop-filter:blur(6px);
+}
+
 /* ============ 关系链 ============ */
 .relation{
   border:1px solid var(--line);border-radius:20px;
@@ -375,6 +429,7 @@ footer .note{opacity:.7;font-size:.78rem}
 
 <!-- ======= Hero ======= -->
 <header class="hero">
+  <img class="hero-bg" src="assets/cover-wide.png" alt="">
   <div class="hero-left">
     <span class="tagline reveal">国漫 · 都市奇幻 · 凡人弑神</span>
     <h1 class="reveal">
@@ -451,6 +506,10 @@ footer .note{opacity:.7;font-size:.78rem}
   <div class="plot-grid">
     <!-- 第一季 -->
     <div class="plot-card reveal">
+      <div class="banner-wrap">
+        <img src="assets/banner-s1.png" alt="第一季宣传图">
+        <span class="banner-label">SEASON 01 宣传图</span>
+      </div>
       <span class="season-badge">SEASON 01 · 2024 · 全15集</span>
       <h3>第一季 · 走出虚假之城</h3>
       <div class="sub">腾讯视频每周三更新 · 首日2集 · 豆瓣 8.4</div>
@@ -464,6 +523,10 @@ footer .note{opacity:.7;font-size:.78rem}
     </div>
     <!-- 第二季 -->
     <div class="plot-card season2 reveal">
+      <div class="banner-wrap">
+        <img src="assets/banner-s2.png" alt="第二季宣传图">
+        <span class="banner-label">SEASON 02 宣传图</span>
+      </div>
       <span class="season-badge">SEASON 02 · 2026 · 全15集</span>
       <h3>第二季 · 凡人弑神的战火</h3>
       <div class="sub">腾讯视频每周四更新 · 预约 870 万 · 暑期国漫热度登顶</div>
@@ -494,12 +557,17 @@ footer .note{opacity:.7;font-size:.78rem}
       <span class="count">夜幕小队队长 · 诸神精神病院院长</span>
     </div>
     <div class="char-grid">
-      <div class="char-card reveal">
-        <div class="avatar">林</div>
-        <h4>林七夜</h4>
-        <span class="role-tag">主角 · 双神代理人</span>
-        <div class="power">禁墟 · 凡尘神域 ｜ 代理人 · 米迦勒 / 倪克斯</div>
-        <p class="bio">7 岁与炽天使米迦勒对视失明十年，觉醒后开启诸神精神病院。在赵空城引领下加入守夜人，立誓守夜十年。曾以神力重塑被抹杀的沧南市，与已死的市民在奇迹中生活十年。带领夜幕小队喊出「大夏境内，神明禁行」，一步步从守小家到守国家。</p>
+      <div class="char-card hero-card reveal">
+        <div class="char-img-wrap">
+          <img class="char-img" src="assets/char-linqiye.png" alt="林七夜">
+          <span class="badge-corner">双神代理人</span>
+          <div class="char-name-overlay">林七夜</div>
+        </div>
+        <div class="char-body">
+          <span class="role-tag">主角 · 夜幕小队队长</span>
+          <div class="power">禁墟 · 凡尘神域 ｜ 代理人 · 米迦勒 / 倪克斯</div>
+          <p class="bio">7 岁与炽天使米迦勒对视失明十年，觉醒后开启诸神精神病院。在赵空城引领下加入守夜人，立誓守夜十年。曾以神力重塑被抹杀的沧南市，与已死的市民在奇迹中生活十年。带领夜幕小队喊出「大夏境内，神明禁行」，一步步从守小家到守国家。</p>
+        </div>
       </div>
     </div>
   </div>
@@ -511,26 +579,36 @@ footer .note{opacity:.7;font-size:.78rem}
       <span class="count">守夜人 · 沧南市守护者</span>
     </div>
     <div class="char-grid">
-      <div class="char-card dead reveal">
-        <div class="avatar">赵</div>
-        <h4>赵空城</h4>
-        <span class="role-tag">引路人 · 亦师亦父</span>
-        <div class="power">守夜人 · 沧南 136 小队</div>
-        <p class="bio">林七夜的领路人与精神支柱。老城区大战中独自力战鬼面王，功勋被林七夜让渡，最终重创牺牲。他的牺牲催生了林七夜「替赵空城守夜十年」的誓言，是无数观众心中最大的意难平。</p>
+      <div class="char-card hero-card dead reveal">
+        <div class="char-img-wrap">
+          <img class="char-img" src="assets/char-zhaokongcheng.png" alt="赵空城">
+          <span class="badge-corner">已牺牲 · 意难平</span>
+          <div class="char-name-overlay">赵空城</div>
+        </div>
+        <div class="char-body">
+          <span class="role-tag">引路人 · 亦师亦父</span>
+          <div class="power">守夜人 · 沧南 136 小队</div>
+          <p class="bio">林七夜的领路人与精神支柱。老城区大战中独自力战鬼面王，功勋被林七夜让渡，最终重创牺牲。他的牺牲催生了林七夜「替赵空城守夜十年」的誓言，是无数观众心中最大的意难平。</p>
+        </div>
       </div>
-      <div class="char-card dead reveal">
+      <div class="char-card hero-card reveal">
+        <div class="char-img-wrap">
+          <img class="char-img" src="assets/char-hongying.png" alt="红缨">
+          <span class="badge-corner">玫火羽裳</span>
+          <div class="char-name-overlay">红缨</div>
+        </div>
+        <div class="char-body">
+          <span class="role-tag">136 小队正面战力</span>
+          <div class="power">禁墟 · 玫火羽裳</div>
+          <p class="bio">巾帼不让须眉的主力战力。手持红缨枪可产生强大火焰焚烧神秘，动漫中刻画得飒爽惊艳，兼具女性的柔美与力量。目睹队友一个个离去，依旧坚守沧南。</p>
+        </div>
+      </div>
+      <div class="char-card reveal">
         <div class="avatar">陈</div>
         <h4>陈牧野</h4>
         <span class="role-tag">原 136 小队队长</span>
         <div class="power">代理神明 · 阎罗王 ｜ 禁墟 · 黑无常</div>
         <p class="bio">实力堪比克莱因境的强大守夜人，曾与绍平歌并称「黑白双煞」。十年前已死，活在林七夜创造的奇迹沧南中，十年间以阎罗殿气息镇压禁物【湿婆怨】。第二季神战中解开封印阻拦冰霜巨人，守护真相曝光。</p>
-      </div>
-      <div class="char-card reveal">
-        <div class="avatar">红</div>
-        <h4>红缨</h4>
-        <span class="role-tag">136 小队正面战力</span>
-        <div class="power">禁墟 · 玫火羽裳</div>
-        <p class="bio">巾帼不让须眉的主力战力。手持红缨枪可产生强大火焰焚烧神秘，动漫中刻画得飒爽惊艳，兼具女性的柔美与力量。目睹队友一个个离去，依旧坚守沧南。</p>
       </div>
       <div class="char-card reveal">
         <div class="avatar">吴</div>
@@ -584,12 +662,29 @@ footer .note{opacity:.7;font-size:.78rem}
         <div class="power">禁墟 · 黑王（神墟之下第一战力）</div>
         <p class="bio">战力爆表，一旦暴走连队友都砍。幼年时禁墟黑王暴走屠了自家满门，从小被当作灾厄：蹲过监狱、当过和尚，自称背着 333 条人命。历经磨难驯服黑王，成为林七夜最忠诚的战友。</p>
       </div>
-      <div class="char-card reveal">
-        <div class="avatar">沈</div>
-        <h4>沈青竹 · 拽哥</h4>
-        <span class="role-tag">卧底 · 寂灭天使</span>
-        <div class="power">集训营天才 · 邪神侵蚀承受者</div>
-        <p class="bio">集训营中仅次于林七夜的天才，也是夜幕小队中最特殊的一个。第二季以「寂灭天使」身份潜伏古神教会，承受邪神侵蚀与当众拷问，上演苦肉计掩护队友，最终与林七夜公开接头，是贯穿全季的暗线英雄。</p>
+      <div class="char-card hero-card reveal">
+        <div class="char-img-wrap">
+          <img class="char-img" src="assets/char-shenqingzhu.png" alt="沈青竹">
+          <span class="badge-corner">卧底 · 寂灭天使</span>
+          <div class="char-name-overlay">沈青竹 · 拽哥</div>
+        </div>
+        <div class="char-body">
+          <span class="role-tag">夜幕小队 · 暗线英雄</span>
+          <div class="power">集训营天才 · 邪神侵蚀承受者</div>
+          <p class="bio">集训营中仅次于林七夜的天才，也是夜幕小队中最特殊的一个。第二季以「寂灭天使」身份潜伏古神教会，承受邪神侵蚀与当众拷问，上演苦肉计掩护队友，最终与林七夜公开接头，是贯穿全季的暗线英雄。</p>
+        </div>
+      </div>
+      <div class="char-card hero-card reveal">
+        <div class="char-img-wrap">
+          <img class="char-img" src="assets/char-caoyuan.png" alt="曹渊">
+          <span class="badge-corner">黑王 · 罪孽业火</span>
+          <div class="char-name-overlay">曹渊</div>
+        </div>
+        <div class="char-body">
+          <span class="role-tag">狂战士 · 罪孽之刃</span>
+          <div class="power">禁墟 · 黑王（神墟之下第一战力）</div>
+          <p class="bio">战力爆表，一旦暴走连队友都砍。幼年时禁墟黑王暴走屠了自家满门，从小被当作灾厄：蹲过监狱、当过和尚，自称背着 333 条人命。历经磨难驯服黑王，成为林七夜最忠诚的战友。</p>
+        </div>
       </div>
       <div class="char-card reveal">
         <div class="avatar">伽</div>
